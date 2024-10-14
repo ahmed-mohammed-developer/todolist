@@ -14,39 +14,20 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import { v4 as uuidv4 } from 'uuid';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { TodosContext } from './context/TodosContext';
 
 
 
-const intiotodos = [
-  {
-    id: uuidv4(),
-    title: "كتابة مقال",
-    des: "كتابة مقال التفاصيل",
-    isCompleted: false
-  },
-  {
-    id: uuidv4(),
-    title: "المذاكرة",
-    des: "المذاكرة التفاصيل",
-    isCompleted: false
-  },
-  {
-    id: uuidv4(),
-    title: "البرمجة ",
-    des: "التفاصيل",
-    isCompleted: false
-  }
-]
 
 
 
 export default function TodoList(){
+  const {todos , setTodos} = useContext(TodosContext)
 
-  const [todos, setTodos] = useState(intiotodos)
   const [titleInput, setTitleInput] = useState("")
   const todoJsx = todos.map((t) => {
-    return <Todo key={t.id} title={t.title} des={t.des}/>
+    return <Todo key={t.id} todo={t} />
   })
   function handleAddClick(){
     const newTodo = {
@@ -58,7 +39,7 @@ export default function TodoList(){
     setTodos([...todos, newTodo])
     setTitleInput("")
   }
-
+  
     const [alignment, setAlignment] = React.useState('left');
 
   const handleAlignment = (event, newAlignment) => {
