@@ -41,7 +41,12 @@ export default function Todo({todo, handleCheckClick}){
   }
 
   function handleDeletConfrim(){
-    setTodos(todos.filter(w => w.id !== todo.id)) ;
+   const updataedTodos = todos.filter((d) => {
+    return d.id !== todo.id
+   })
+   setTodos(updataedTodos)
+   localStorage.setItem("todos", JSON.stringify(updataedTodos))
+
   }
   function handleUpdateConfrim(){
     const updatedTodoss = todos.map((e) => {
@@ -53,6 +58,8 @@ export default function Todo({todo, handleCheckClick}){
     })
     setTodos(updatedTodoss)
     setShowUpdate(false)
+    localStorage.setItem("todos", JSON.stringify(updatedTodoss))
+
   }
 
   function handleCheckClickicon(){
@@ -63,6 +70,7 @@ export default function Todo({todo, handleCheckClick}){
       return e
     })
     setTodos(updataIscomplet)
+    localStorage.setItem("todos", JSON.stringify(updataIscomplet))
   }
     return(
         <>

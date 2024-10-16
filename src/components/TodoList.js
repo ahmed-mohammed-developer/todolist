@@ -14,7 +14,7 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import { v4 as uuidv4 } from 'uuid';
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { TodosContext } from './context/TodosContext';
 
 
@@ -29,6 +29,13 @@ export default function TodoList(){
   const todoJsx = todos.map((t) => {
     return <Todo key={t.id} todo={t} />
   })
+
+  useEffect(() => {
+    const storageTodos = JSON.parse(localStorage.getItem("todos"))
+    setTodos(storageTodos)
+  }, [])
+
+
   function handleAddClick(){
     const newTodo = {
       id: uuidv4(),
@@ -36,7 +43,9 @@ export default function TodoList(){
       des: "",
       isCompleted: false
     }
-    setTodos([...todos, newTodo])
+    const updateStorg = [...todos, newTodo]
+    setTodos(updateStorg)
+    localStorage.setItem("todos", JSON.stringify(updateStorg))
     setTitleInput("")
   }
   
@@ -45,7 +54,7 @@ export default function TodoList(){
   const handleAlignment = (event, newAlignment) => {
     setAlignment(newAlignment);
   };
-
+      
     return(
         <>
     <CssBaseline />
