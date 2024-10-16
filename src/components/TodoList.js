@@ -24,18 +24,42 @@ import { TodosContext } from './context/TodosContext';
 
 export default function TodoList(){
   const {todos , setTodos} = useContext(TodosContext)
-
   const [titleInput, setTitleInput] = useState("")
-  const todoJsx = todos.map((t) => {
+  const [displayTodosType, setDisplayTodosType] = useState("all")
+
+  //filter isCompleted
+  const completedTodos = todos.filter((t) => {
+    return t.isCompleted
+  })
+
+  //filter isCompleted
+  const notCompletedTodos = todos.filter((t) => {
+    return !t.isCompleted
+  })
+
+    let todosToBeRender = todos
+
+    if (displayTodosType === "completed"){
+      todosToBeRender = completedTodos
+    } else if (displayTodosType === "non-completed"){
+      todosToBeRender = notCompletedTodos
+    } else {
+      todosToBeRender = todos
+    }
+  const todoJsx = todosToBeRender.map((t) => {
     return <Todo key={t.id} todo={t} />
   })
+
+
 
   useEffect(() => {
     const storageTodos = JSON.parse(localStorage.getItem("todos"))
     setTodos(storageTodos)
   }, [])
 
-
+   function changeDisplyeType(e){
+    setDisplayTodosType(e.target.value)
+   }
   function handleAddClick(){
     const newTodo = {
       id: uuidv4(),
@@ -49,11 +73,6 @@ export default function TodoList(){
     setTitleInput("")
   }
   
-    const [alignment, setAlignment] = React.useState('left');
-
-  const handleAlignment = (event, newAlignment) => {
-    setAlignment(newAlignment);
-  };
       
     return(
         <>
@@ -67,19 +86,19 @@ export default function TodoList(){
         <Divider />
         {/* Toggle Button Start */}
         <ToggleButtonGroup
-      value={alignment}
+      value={displayTodosType}
       exclusive
-      onChange={handleAlignment}
+      onChange={changeDisplyeType}
       aria-label="text alignment"
       style={{marginTop: "30px"}}
     >
-      <ToggleButton value="left" aria-label="left aligned">
+      <ToggleButton value="all" aria-label="left aligned">
         الكل
       </ToggleButton>
-      <ToggleButton value="center" aria-label="centered">
+      <ToggleButton value="completed" aria-label="centered">
         المنجز
       </ToggleButton>
-      <ToggleButton value="right" aria-label="right aligned">
+      <ToggleButton value="non-completed" aria-label="right aligned">
         غير منجز
       </ToggleButton>
         </ToggleButtonGroup>
