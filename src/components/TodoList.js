@@ -14,8 +14,9 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import { v4 as uuidv4 } from 'uuid';
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect , useMemo } from 'react';
 import { TodosContext } from './context/TodosContext';
+import { SnackBarContext } from './context/SnackBarContext';
 
 
 
@@ -26,16 +27,20 @@ export default function TodoList(){
   const {todos , setTodos} = useContext(TodosContext)
   const [titleInput, setTitleInput] = useState("")
   const [displayTodosType, setDisplayTodosType] = useState("all")
+  const {showHideToast} = useContext(SnackBarContext)
+  //filter isCompleted
+  const completedTodos = useMemo(() => {
+    return todos.filter((t) => {
+      return t.isCompleted
+    })
+  }, [todos])
 
   //filter isCompleted
-  const completedTodos = todos.filter((t) => {
-    return t.isCompleted
-  })
-
-  //filter isCompleted
-  const notCompletedTodos = todos.filter((t) => {
-    return !t.isCompleted
-  })
+  const notCompletedTodos = useMemo(() => {
+    todos.filter((t) => {
+      return !t.isCompleted
+    })
+  }, [todos])
 
     let todosToBeRender = todos
 
@@ -71,6 +76,7 @@ export default function TodoList(){
     setTodos(updateStorg)
     localStorage.setItem("todos", JSON.stringify(updateStorg))
     setTitleInput("")
+    showHideToast("تم الإضافة بنجاح")
   }
   
       

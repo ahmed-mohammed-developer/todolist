@@ -3,6 +3,7 @@ import './App.css';
 import TodoList from './components/TodoList';
 import { TodosContext } from './components/context/TodosContext';
 import { v4 as uuidv4 } from 'uuid';
+import { MyProvider } from './components/context/SnackBarContext';
 
 
 
@@ -28,12 +29,18 @@ const intiotodos = [
 ]
 function App() {
   const [todos, setTodos] = useState(intiotodos)
+ 
+
+  
 
   return (
     <div className="App">
+      <MyProvider >
       <TodosContext.Provider value={{todos, setTodos}}>
       <TodoList />
       </TodosContext.Provider>
+      </MyProvider>
+     
     </div>
   );
 }
